@@ -1,6 +1,7 @@
 # 🏗️ Multi-Tenant E-Commerce Platform — Production Roadmap  
 
- **real, production-ready multi-tenant marketplace** 
+**Real, production-ready multi-tenant marketplace**
+
 This document outlines every step required to go from **zero → live revenue → scalable SaaS** using:
 
 - **Next.js 15 (App Router + Server Actions)**
@@ -29,6 +30,68 @@ Use this as the engineering plan for the entire project.
   - `STRIPE_SECRET_KEY`  
   - `STRIPE_WEBHOOK_SECRET`  
   - `STRIPE_CONNECT_CLIENT_ID`  
+
+---
+
+### 1.1 Homepage & Catalog Layout (Current Step)
+
+**Setup**
+
+- [ ] Install `lucide-react` for icons:  
+      `npm install lucide-react`
+- [ x] Create `lib/catalog-config.ts` with:
+  - [ ] `CatalogTemplate` type
+  - [ ] `FilterDefinition` type
+  - [ ] `defaultCatalogTemplate` configuration
+- [ ] Add a `placeholder-product.png` in `/public` (or replace with real images)
+
+**🧱 Components**
+
+- [ ] Create `components/layout/site-header.tsx`
+  - [ ] Make it a client component (`"use client"`)
+  - [ ] Implement logo + desktop nav
+  - [ ] Implement mobile hamburger menu
+  - [ ] Implement slide-over mobile panel with nav links + categories
+  - [ ] Keep header sticky (`sticky top-0`)
+  - [ ] Extract category pills into reusable `CategoryBar` inside `SiteHeader`
+- [ ] Create `components/catalog/filter-sidebar.tsx`
+  - [ ] Render filters based on `template.filters`
+  - [ ] Support `select` and `search` filter types
+  - [ ] Make sidebar sticky (`sticky top-28`) on desktop, hidden on mobile
+- [ ] Create `components/catalog/product-grid.tsx`
+  - [ ] Grid layout with product cards (name + brand + image)
+- [ ] Create `components/layout/site-footer.tsx`
+  - [ ] Simple footer with brand + © year
+
+**🏠 Page wiring**
+
+- [ ] Update `app/page.tsx` to:
+  - [ ] Import `defaultCatalogTemplate`
+  - [ ] Render `<SiteHeader template={template} />`
+  - [ ] Wrap main content in the `max-w-6xl` container
+  - [ ] Render `<FilterSidebar template={template} />` and `<ProductGrid />`
+  - [ ] Append `<SiteFooter />`
+
+**✅ Behavior checks**
+
+- [ ] Scroll the page:
+  - [ ] Header (nav + categories) stays fixed at the top
+  - [ ] Sidebar stays pinned under header on desktop
+  - [ ] Only the product grid “moves” visually
+- [ ] Resize to mobile:
+  - [ ] Desktop nav disappears
+  - [ ] Hamburger appears and opens/closes the slide-over menu
+  - [ ] Categories are visible inside the slide-over
+
+**🔮 Future-proofing (for later phases)**
+
+- [ ] Plan an onboarding flow that:
+  - [ ] Lets store owners choose a `CatalogTemplate` (beats, ebooks, party PDFs, etc.)
+  - [ ] Stores the chosen `templateId` on the `Store` record
+- [ ] Have catalog pages fetch the right template for the active store and pass it into:
+  - [ ] `SiteHeader`
+  - [ ] `FilterSidebar`
+  - [ ] Any future components that need categories/filters
 
 ---
 
